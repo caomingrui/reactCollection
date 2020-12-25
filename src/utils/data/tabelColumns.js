@@ -12,7 +12,7 @@ export const iconCreate = (name) => {
 }
 
 // 表格头总数据集
-export const columnsData = [
+const data = [
     {
         key: '1',
         tabel: 'route',
@@ -97,6 +97,8 @@ export const columnsData = [
         ]
     }
 ];
+
+export const columnsData = JSON.parse(localStorage.getItem('adminColums'))==null?data: JSON.parse(localStorage.getItem('adminColums'));
 
 const columsFun = (state, action) => {
     state = action;
