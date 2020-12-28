@@ -10,6 +10,7 @@ const Route = React.lazy(() => import('@/page/admin/setUp/route'));
 const User = React.lazy(() => import('@/page/admin/setUp/user'));
 const Icon = React.lazy(() => import('@/page/admin/setUp/icon'));
 const Columns = React.lazy(() => import('@/page/admin/setUp/column'));
+const Color = React.lazy(() => import('@/page/admin/setUp/color'));
 
 const routeList = [
     {
@@ -19,6 +20,7 @@ const routeList = [
             { path: '/setUp/User', name: 'user', key: '14', auth: true, component: User, routePath: 'page/admin/setUp/user', icon: 'TeamOutlined'},
             { path: '/setUp/Icon', name: 'icon', key: '15', auth: true, component: Icon, routePath: 'page/admin/setUp/icon', icon: 'UserOutlined'},
             { path: '/setUp/Columns', name: 'column', key: '16', auth: true, component: Columns, routePath: 'page/admin/setUp/column', icon: 'UserOutlined'},
+            { path: '/setUp/Color', name: 'color', key: '17', auth: true, component: Color, routePath: 'page/admin/setUp/color', icon: 'UserOutlined'},
             { path: '/User/Bill', name: 'A', key: '12', auth: true, component: A, routePath: 'test/A', icon: 'UserOutlined'},
             { path: '/User/Alex', name: 'B', key: '13', auth: true, component: Route, routePath: 'test/A', icon: 'UserOutlined'}
         ]
@@ -33,6 +35,7 @@ const routeList = [
     },
 ];
 
+// 本地数据component 对象生成
 const routeComponent = (list) => {
     list.map((res, ind) => {
         res.component = React.lazy(() => import('@/' + res.routePath));

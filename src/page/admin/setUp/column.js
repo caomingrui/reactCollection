@@ -14,27 +14,33 @@ const layout = {
 export default memo(() => {
     const {data, screenColumns, screenRender} = useColums();
     const [tabelColumns, setColumns] = useState();
-    const [routers, setRouters] = useContext(AppColumns); // 总 admin 路由规则
-    const [bounState, setBounState] = useState(false); // 弹框状态
+    const [routers, setRouters] = useContext(AppColumns);          // 总 admin 路由规则
+    const [bounState, setBounState] = useState(false);   // 弹框状态
     const [lineData, setLineData] = useState({val: []}); // 当前操作数据
-    const formColums = useRef(null);// 注册表单ref
-    const [saveState, setSaveState] = useState(); // 保存表单前回显数据
+    const formColums = useRef(null);                     // 注册表单ref
+    const [saveState, setSaveState] = useState();                  // 保存表单前回显数据
 
     // 弹框确认
     const bouncConfirm = () => {
         setBounState(false);
     }
 
-
-    const changeBut = (text) => {
+    // change 事件
+    const changeBut = (text, col,index) => {
         setBounState(true);
         setLineData(text);
 
+        // 表单回显
+        tabelEcho(text.val);
+    }
+
+    // 表单数值回显
+    const tabelEcho = (data) => {
         // 拼凑表单键值对
         let obj = {};
-        text.val.map((res, ind) => {
-            obj['title' + (ind + 1)] = text.val[ind].title;
-            obj['dataIndex' + (ind + 1)] = text.val[ind].dataIndex;
+        data.map((res, ind) => {
+            obj['title' + (ind + 1)] = data[ind].title;
+            obj['dataIndex' + (ind + 1)] = data[ind].dataIndex;
         });
 
         // 保存表单前回显数据
@@ -47,8 +53,6 @@ export default memo(() => {
 
     // 伪提交
     const onSubmitColumns = () => {
-        // console.log(saveState)
-        // console.log(formColums.current.getFieldsValue());
         const diffArr = compareObject(formColums.current.getFieldsValue());
 
         let arr = [...routers];
@@ -58,14 +62,13 @@ export default memo(() => {
 
                         // 存在改动
                         if (diffArr.length>0) {
-                            console.log(diffArr)
                             diffArr.map(diffRes => {
                                 if (diffRes.ind%2==0) {
-                                    const num = parseInt(diffRes.ind/2);
+                                    const num = parseInt(diffRes.ind / 2);
                                     res.val[num].title = diffRes.val;
                                 }
                                 else {
-                                    const num = parseInt(diffRes.ind/2);
+                                    const num = parseInt(diffRes.ind / 2);
                                     res.val[num].dataIndex = diffRes.val;
                                 }
                             })
@@ -79,15 +82,18 @@ export default memo(() => {
                     }
                 });
             }
+
             eachArr(arr);
             setRouters(arr);
             localStorage.setItem('adminColums', JSON.stringify(arr));
+            setBounState(false);
+            TestColumns();
     }
 
     // 暴力比较对象寻找差异ind
     const compareObject = (tabelData) => {
         const diffArr = [];
-        Object.keys(saveState).map((res, ind) => {
+        Object.keys(tabelData).map((res, ind) => {
             if (saveState[res] != tabelData[res]) {
                 const obj = {};
                 obj.ind = ind;
@@ -96,21 +102,6 @@ export default memo(() => {
             }
         });
         return diffArr;
-    }
-
-    // 抽离 表单数据
-    const pullAwayData = (data) => {
-        console.log(data)
-        const arr = [];
-        Object.keys(data).map((res, ind) => {
-            if (ind%2==0) {
-                let obj = {title: data[res],
-                    dataIndex: data[Object.keys(data)[ind + 1]],
-                    key: (data[res]=='Action')?'action': (data[Object.keys(data)[ind + 1]])}; // 暂写死的
-                arr.push(obj)
-            }
-        })
-        return arr;
     }
 
     // 规则字符串化
@@ -123,50 +114,68 @@ export default memo(() => {
     }
 
     // 规则操作块
-    const ColumnsChange = (text) => {
+    const ColumnsChange = (text, col, index) => {
         return (
             <Space size="middle">
-                <a onClick={() => {changeBut(text)}}> Change </a>
+                <a onClick={() => {changeBut(text, col, index)}}> Change </a>
             </Space>
         );
     }
 
     // 删除对应表单列
     const deleteLineData = (ind) => {
-        console.log(ind);
         let arr = lineData;
         let notDelArr = [];
-        if (lineData.val.length>0) {
+        if (lineData.val.length > 0) {
             [...arr.val].map((res, index) => {
                 if (res.key == ind) {
-                    console.log(index)
-                    // delete [...arr.val][index];
-                    // arr.val.splice(index, 1);
-                    // arr.val.slice(index, index+1)
+                    console.log(index);
                 }
                 else {
                     notDelArr.push(res);
                 }
             })
-            // arr.val.splice((ind - 1), 1);
-            console.log(arr.val)
-            arr.val = notDelArr
-            console.log(arr)
-            setLineData({val: []})
+            arr.val = notDelArr;
         }
+        setLineData({val: []}); // 防止缓存
+        setLineData(arr);
+        tabelEcho(lineData.val);      // 表单回显
+    }
+
+    // 添加列
+    const addList = () => {
+        console.log(lineData)
+        let listArr = lineData;
+        const key = new Date();
+        console.log(key)
+        listArr.val.push({
+            title: "",
+            dataIndex: "",
+            key: key
+        });
+        console.log(listArr);
+        setLineData({val: []});
         setTimeout(() => {
-            setLineData(arr)
+            setLineData(listArr);
         }, 100)
+        console.log(lineData)
     }
 
     useEffect(() => {
         console.log("columns组件挂载完成之后执行:");
+        TestColumns();
+    },[]);
+
+    // 测试强制刷新表格
+    const TestColumns = () => {
+        setColumns([]);
         setTimeout(() => {
             screenRender('columns', 'val', testColumns, false);
             setColumns(screenRender('columns', 'action', ColumnsChange, false));
-        }, 200);
-    },[]);
+        });
+    }
 
+    console.log(formColums)
     return (
         <>
             <Popout popoutBut={[bouncConfirm]} popout={[bounState, setBounState]} width={600}>
@@ -182,13 +191,12 @@ export default memo(() => {
                                         </Form.Item>
                                     </Col>
                                     <Col span={11}>
-                                        <Form.Item label="dataIndex" name={'dataIndex' + (ind + 1)} rules={(ind+1)<lineData.val.length?[{ required: true, message: 'Please input your child menu dataIndex'+ ind +'!' }]: ''}>
+                                        <Form.Item label="dataIndex" name={'dataIndex' + (ind + 1)} >
                                             <Input />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2} onClick={() => {deleteLineData(res.key)}}>
                                         <DeleteOutlined />
-                                        {lineData.val[lineData.val.length - 1].title}
                                     </Col>
                                 </Row>
                             )
@@ -201,7 +209,7 @@ export default memo(() => {
                                 <Button style={{marginRight: '20px'}}>
                                     Cancel
                                 </Button>
-                                <Button htmlType="submit"  type="primary" onClick={onSubmitColumns} style={{marginRight: '20px'}}>
+                                <Button htmlType="submit"  type="primary" onClick={addList} style={{marginRight: '20px'}}>
                                     Add
                                 </Button>
                                 <Button htmlType="submit"  type="primary" onClick={onSubmitColumns} style={{marginRight: '20px'}}>

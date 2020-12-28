@@ -1,9 +1,5 @@
 import React, {useState, useEffect, useReducer, useContext, memo} from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
-// import {
-//     SmileOutlined,
-//     FileOutlined
-// } from '@ant-design/icons';
 import * as Icon from '@ant-design/icons';
 import {BrowserRouter as Router, Route, Switch, Redirect, Link } from 'react-router-dom';
 import {Test1, Test2, Test3} from "../testMixins";
@@ -11,8 +7,8 @@ import adminRoutes from "../../route/adminRoute";
 import FancyRoute from "../../utils/FancyRoute";
 import { Storage } from './mixins/storage';
 import styled from 'styled-components';
-import { AppRoute } from '@/utils/manage/ContextState'
-// import { AppRoute } from '../../index'
+import { AppRoute } from '@/utils/manage/ContextState';
+
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -22,7 +18,14 @@ const HeaderStyle = styled.div`
   width: calc(100% - 40px);
   justify-content: space-between;
   padding: 0 20px;
- 
+`;
+
+const BreadCrumbsStyle = styled.div`
+  width: 100%;
+  background: #ffffff;
+  padding: 10px 25px;
+  min-height: 100px;
+  //box-shadow: 0 2px 8px #f0f1f2;
 `;
 
 // 动态icon
@@ -110,7 +113,7 @@ class SiderDemo extends React.Component {
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
-                    <Header style={{ padding: 0, borderRadius: '1px', background: '#ffffff', boxShadow: '5px 5px 6px #e6e6e6, -5px -5px 6px #ffffff' }} >
+                    <Header style={{ padding: 0, borderRadius: '1px', background: '#ffffff', boxShadow: '0 1px 4px rgba(0,21,41,.08)', position: 'relative' }} >
                         <HeaderStyle>
                             <span></span>
                             <div>
@@ -119,11 +122,13 @@ class SiderDemo extends React.Component {
                             </div>
                         </HeaderStyle>
                     </Header>
-                    <Content style={{ margin: '0 16px' }}>
-                        <Breadcrumb style={{ margin: '16px 0' }}>
-                            <Breadcrumb.Item>{ this.state.fatherName }</Breadcrumb.Item>
-                            <Breadcrumb.Item>{ this.state.childName }</Breadcrumb.Item>
-                        </Breadcrumb>
+                    <Content style={{ margin: '0 0px' }}>
+                        <BreadCrumbsStyle>
+                            <Breadcrumb style={{ margin: '0px 0' }}>
+                                <Breadcrumb.Item>{ this.state.fatherName }</Breadcrumb.Item>
+                                <Breadcrumb.Item>{ this.state.childName }</Breadcrumb.Item>
+                            </Breadcrumb>
+                        </BreadCrumbsStyle>
                         <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                             { this.props.children }
                         </div>

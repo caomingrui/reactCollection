@@ -16,6 +16,7 @@ const data = [
     {
         key: '1',
         tabel: 'route',
+        hh: 12,
         val: [
             {
                 title: '菜单名称',
@@ -39,6 +40,7 @@ const data = [
     {
         key: '2',
         tabel: 'icon',
+        hh: 12,
         val: [
             {
                 title: '菜单名称',
@@ -68,6 +70,7 @@ const data = [
     {
         key: '3',
         tabel: 'columns',
+        hh: 12,
         val: [
             {
                 title: '模块名称',
