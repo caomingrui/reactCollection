@@ -128,10 +128,11 @@ export default memo((props) => {
 
     useEffect(() => {
         console.log("icon组件挂载完成之后执行:");
-        setTabelData('');
-        setTimeout(() => {
-            setTabelData(screenRender('icon', 'action', ActionTable));
-        }, 200);
+        // setTabelData('');
+        setTabelData(screenRender('icon', 'action', ActionTable));
+        // setTimeout(() => {
+        //
+        // }, 200);
     },[]);
 
     return (

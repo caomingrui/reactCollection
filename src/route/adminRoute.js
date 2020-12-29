@@ -11,6 +11,7 @@ const User = React.lazy(() => import('@/page/admin/setUp/user'));
 const Icon = React.lazy(() => import('@/page/admin/setUp/icon'));
 const Columns = React.lazy(() => import('@/page/admin/setUp/column'));
 const Color = React.lazy(() => import('@/page/admin/setUp/color'));
+const Person = React.lazy(() => import('@/page/admin/setUp/person'));
 
 const routeList = [
     {
@@ -28,6 +29,7 @@ const routeList = [
     {
         path: '/User', name: 'User', auth: true, component: A, key: '2', routePath: 'test/A', icon: 'UserOutlined',
         children: [
+            { path: '/User/Person', name: 'person', key: '24', auth: true, component: Person, routePath: 'page/admin/setUp/person', icon: 'UserOutlined'},
             { path: '/User/Tom', name: 'Tom', key: '21', auth: true, component: A, routePath: 'test/A', icon: 'UserOutlined'},
             { path: '/User/Bill', name: 'Bill', key: '22', auth: true, component: A, routePath: 'test/A', icon: 'UserOutlined'},
             { path: '/User/Alex', name: 'Alex', key: '23', auth: true, component: A, routePath: 'test/A', icon: 'UserOutlined'}

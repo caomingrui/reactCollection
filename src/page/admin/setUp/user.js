@@ -1,54 +1,39 @@
-import React, {memo} from "react";
+import React, {memo, useEffect, useState} from "react";
 import Table, { MultiLayerTable } from '../template/table'
 import {Space} from "antd";
+import { useColums, iconCreate } from '@/utils/data/tabelColumns';
 
-const columns = [
+const ActionTable = (text, record, ind) => (
+    <Space size="middle">
+        <a onClick={() => {}}> Change </a>
+        <a onClick={() => {}}> Delete </a>
+    </Space>
+);
+
+// 测试 用户假数据
+const userData = [
     {
-        title: '角色名称',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: '角色权限',
-        dataIndex: 'path',
-        key: 'path',
-        width: '12%',
-    },
-    {
-        title: '账号',
-        dataIndex: 'path',
-        key: 'path',
-        width: '12%',
-    },
-    {
-        title: '密码',
-        dataIndex: 'path',
-        key: 'path',
-        width: '12%',
-    },
-    {
-        title: '最近上线时间',
-        dataIndex: 'path',
-        key: 'path',
-        width: '12%',
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (text, record, ind) => (
-            <Space size="middle">
-                <a onClick={() => {}}> Change </a>
-                <a onClick={() => {}}> Delete </a>
-            </Space>
-        ),
+        key: 1,
+        name: '张三',
+        permissions: '游客',
+        account: '132030',
+        password: '******',
+        time: '2020'
     },
 ];
 
 export default memo((props) => {
+    const {data, screenColumns, screenRender} = useColums();
+    const [tabelData, setTabelData] = useState(); // 表格规则
+
+    useEffect(() => {
+        console.log("user组件挂载完成之后执行:");
+        setTabelData(screenRender('user', 'action', ActionTable));
+    },[]);
 
     return (
         <>
-            <Table columns={columns} ></Table>
+            <Table columns={tabelData} data={userData}></Table>
         </>
     );
 });
