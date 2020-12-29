@@ -6,3 +6,6 @@ export const AppRoute = React.createContext({});
 
 // 全局admin 表格规则
 export const AppColumns = React.createContext({});
+
+// 全局admin 颜色数据
+export const AppColor = React.createContext({});

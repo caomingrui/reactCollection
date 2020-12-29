@@ -7,7 +7,8 @@ import adminRoutes from "../../route/adminRoute";
 import FancyRoute from "../../utils/FancyRoute";
 import { Storage } from './mixins/storage';
 import styled from 'styled-components';
-import { AppRoute } from '@/utils/manage/ContextState';
+import { AppRoute, AppColor } from '@/utils/manage/ContextState';
+import color from "./setUp/color";
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -18,6 +19,7 @@ const HeaderStyle = styled.div`
   width: calc(100% - 40px);
   justify-content: space-between;
   padding: 0 20px;
+  
 `;
 
 const BreadCrumbsStyle = styled.div`
@@ -26,7 +28,25 @@ const BreadCrumbsStyle = styled.div`
   padding: 10px 25px;
   min-height: 100px;
   //box-shadow: 0 2px 8px #f0f1f2;
+  background-color: ${ props => props.breadCrumbsColor + '!important' };
 `;
+
+const ConfigColor = styled.span`
+    color: red;
+    background-color: ${ props => props.sidebarColor + '!important' };
+
+          .ant-layout-sider, .ant-menu.ant-menu-dark, .ant-layout-sider-trigger{
+            background-color: ${ props => props.sidebarColor + '!important' };
+          }
+      
+          .ant-menu-dark .ant-menu-inline.ant-menu-sub {
+            background-color: ${ props => props.sidebarAnColor + '!important' };
+          }
+    
+          .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+            background-color: ${ props => props.checkBarColor + '!important' };
+          }
+`
 
 // 动态icon
 const iconCreate = (name) => {
@@ -46,7 +66,7 @@ class SiderDemo extends React.Component {
         childName: '',
         OpenKeys: '',
         SelectedKeys: '',
-        storage: Storage()
+        storage: Storage(),
     };
 
     componentWillMount = () => {
@@ -82,39 +102,44 @@ class SiderDemo extends React.Component {
         this.state.storage.setStor([fatherName, childName]);
     }
 
+
     render() {
         const { collapsed } = this.state;
+        const { navLeftColor, sidebarColor, sidebarAnColor, checkBarColor, navColor, breadCrumbsColor, contentColor } = this.props.totalColor;
         return (
             <Layout style={{ minHeight: '100vh' }}>
-                <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
-                    <div className="logo" />
-                    <div style={{width: '100%', height: '64px', background: '#8f92d7'}}></div>
-                    <Menu theme="dark" defaultSelectedKeys={this.state.SelectedKeys} defaultOpenKeys={this.state.OpenKeys} mode="inline">
-                        {
-                            this.props.state.map((res, ind) => {
-                                return (
-                                    <SubMenu key={ res.key } icon={res.icon?iconCreate(res.icon): <Icon.FileOutlined />} title={ res.name } >
-                                        {
-                                            res.children.map((da, index) => {
-                                                return (
-                                                    <Menu.Item key={ da.key } icon={da.icon?iconCreate(da.icon): ''}>
-                                                        <Link to={`${this.props.route}/${da.name}`} onClick={()=> {this.linkGetData(res, da)}}>{ da.name }</Link>
-                                                    </Menu.Item>
-                                                )
-                                            })
-                                        }
-                                    </SubMenu>
-                                )
-                            })
-                        }
-                        <Menu.Item key="9" icon={<Icon.FileOutlined />}>
-                            Files
-                        </Menu.Item>
-                    </Menu>
-                </Sider>
+                <ConfigColor sidebarColor={sidebarColor} sidebarAnColor={sidebarAnColor} checkBarColor={checkBarColor}>
+                    <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse} >
+                        <div className="logo" />
+                        <div style={{width: '100%', height: '64px', background: navLeftColor}} ></div>
+
+                        <Menu theme="dark" defaultSelectedKeys={this.state.SelectedKeys} defaultOpenKeys={this.state.OpenKeys} mode="inline" >
+                            {
+                                this.props.state.map((res, ind) => {
+                                    return (
+                                        <SubMenu key={ res.key } icon={res.icon?iconCreate(res.icon): <Icon.FileOutlined />} title={ res.name } >
+                                            {
+                                                res.children.map((da, index) => {
+                                                    return (
+                                                        <Menu.Item key={ da.key } icon={da.icon?iconCreate(da.icon): ''}>
+                                                            <Link to={`${this.props.route}/${da.name}`} onClick={()=> {this.linkGetData(res, da)}}>{ da.name }</Link>
+                                                        </Menu.Item>
+                                                    )
+                                                })
+                                            }
+                                        </SubMenu>
+                                    )
+                                })
+                            }
+                            <Menu.Item key="9" icon={<Icon.FileOutlined />}>
+                                Files {navLeftColor}
+                            </Menu.Item>
+                        </Menu>
+                    </Sider>
+                </ConfigColor>
                 <Layout className="site-layout">
-                    <Header style={{ padding: 0, borderRadius: '1px', background: '#ffffff', boxShadow: '0 1px 4px rgba(0,21,41,.08)', position: 'relative' }} >
-                        <HeaderStyle>
+                    <Header style={{ padding: 0, borderRadius: '1px', background: navColor, boxShadow: '0 1px 4px rgba(0,21,41,.08)', position: 'relative' }} >
+                        <HeaderStyle >
                             <span></span>
                             <div>
                                 <Icon.SmileOutlined />
@@ -122,14 +147,14 @@ class SiderDemo extends React.Component {
                             </div>
                         </HeaderStyle>
                     </Header>
-                    <Content style={{ margin: '0 0px' }}>
-                        <BreadCrumbsStyle>
+                    <Content style={{ margin: '0 0px', background: contentColor }}>
+                        <BreadCrumbsStyle breadCrumbsColor={breadCrumbsColor}>
                             <Breadcrumb style={{ margin: '0px 0' }}>
                                 <Breadcrumb.Item>{ this.state.fatherName }</Breadcrumb.Item>
                                 <Breadcrumb.Item>{ this.state.childName }</Breadcrumb.Item>
                             </Breadcrumb>
                         </BreadCrumbsStyle>
-                        <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+                        <div className="site-layout-background" style={{ padding: 24, minHeight: 360}}>
                             { this.props.children }
                         </div>
                     </Content>
@@ -146,6 +171,7 @@ export default memo((props) => {
     const [routers, setRouters] = useContext(AppRoute);
     const [state, setState] = useState(routers);
     const [boolValue, setBoolValue] = useState(false);
+    const [totalColor, setTotalColor] = useContext(AppColor);
 
     useEffect(() => {
         if(boolValue) {
@@ -158,7 +184,7 @@ export default memo((props) => {
     return (
         <>
             <AppContext.Provider value={[state, setState]}>
-                <SiderDemo state={adminRoutes} route={props.match.path}>
+                <SiderDemo state={adminRoutes} route={props.match.path} totalColor={totalColor}>
                         {
                             routers.map((res, ind) => {
                                 return (
