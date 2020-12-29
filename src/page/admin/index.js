@@ -8,7 +8,7 @@ import FancyRoute from "../../utils/FancyRoute";
 import { Storage } from './mixins/storage';
 import styled from 'styled-components';
 import { AppRoute, AppColor } from '@/utils/manage/ContextState';
-import color from "./setUp/color";
+import header from './ resources/img/header.jpg'
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -20,6 +20,11 @@ const HeaderStyle = styled.div`
   justify-content: space-between;
   padding: 0 20px;
   
+  img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
 `;
 
 const BreadCrumbsStyle = styled.div`
@@ -142,8 +147,7 @@ class SiderDemo extends React.Component {
                         <HeaderStyle >
                             <span></span>
                             <div>
-                                <Icon.SmileOutlined />
-                                <img src='../../assters/img/header.jpg' alt=""/>
+                                <NavUser></NavUser>
                             </div>
                         </HeaderStyle>
                     </Header>
@@ -164,6 +168,17 @@ class SiderDemo extends React.Component {
         );
     }
 }
+
+// 头部用户栏
+const NavUser = () => {
+
+    return (
+        <>
+            <img src={header} alt=""/>
+            <span>React Hooks</span>
+        </>
+    );
+};
 
 export const AppContext = React.createContext({});
 

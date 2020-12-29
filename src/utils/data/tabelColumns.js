@@ -1,9 +1,10 @@
 import * as Icon from '@ant-design/icons';
 import React, {useState, useEffect, useReducer, useContext, memo} from 'react';
+import {Space} from "antd";
 
 // 动态创建icon
 export const iconCreate = (name) => {
-    if (name != 'setTwoToneColor' && name != '') {
+    if (name != 'setTwoToneColor' && name != '' && name != undefined) {
         return React.createElement(Icon && (Icon)[name], {
             style: {fontSize: '16px', color: '#d7a28f'}
         });
@@ -97,6 +98,47 @@ const data = [
                 render: () => {}
             },
         ]
+    },
+
+    {
+        key: '4',
+        tabel: 'user',
+        val: [
+            {
+                title: '角色名称',
+                dataIndex: 'name',
+                key: 'name',
+            },
+            {
+                title: '角色权限',
+                dataIndex: 'permissions',
+                key: 'permissions',
+                width: '12%',
+            },
+            {
+                title: '账号',
+                dataIndex: 'account',
+                key: 'account',
+                width: '12%',
+            },
+            {
+                title: '密码',
+                dataIndex: 'password',
+                key: 'password',
+                width: '12%',
+            },
+            {
+                title: '最近上线时间',
+                dataIndex: 'time',
+                key: 'time',
+                width: '12%',
+            },
+            {
+                title: 'Action',
+                key: 'action',
+                render: () => {}
+            },
+        ]
     }
 ];
 
@@ -139,6 +181,7 @@ export const useColums = (props) => {
      */
     const screenRender = (tabel, key, call, boo = true) => {
         const [columns, index] = screenColumns(tabel);
+        console.log(columns)
         const arr = boo?JSON.parse(JSON.stringify(colData)): [...colData];
         if ( key != 'icon' ) {
             arr[1].val[1].render = (text) => iconCreate(text);
@@ -149,6 +192,7 @@ export const useColums = (props) => {
                 setColData(arr);
             }
         })
+        console.log(arr[index].val)
         return arr[index].val;
     }
 
