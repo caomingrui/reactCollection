@@ -17,10 +17,12 @@ const Test = React.lazy(async () => {
 
 const Admin = React.lazy(() => import('@/page/admin/index'));
 
+const Three = React.lazy(() => import('@/page/threeStudy/index'));
+const ANI = React.lazy(() => import('@/page/threeStudy/test/objectCollision'));
 
 const routes = [
     {
-        path: '/A', auth: true, component: A
+        path: '/A', auth: true, component: ANI
     },
     { path: '/', exact: true, auth: true, render: () => <Redirect to="/NotFound" /> },
     {
@@ -31,6 +33,9 @@ const routes = [
     },
     {
         path: '/admin', auth: true, component: Admin
+    },
+    {
+        path: '/three', auth: true, component: Three
     },
     { path: '/*' ,component: NotFound }
 ];
