@@ -4,7 +4,9 @@ import {loadMustBe} from "./objectCollision";
 import {loadRender} from "../src/js/three";
 import THREEx from "../src/js/KeyboardState";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import { bouncHover } from '../src/js/threeLibrary'
+import { bouncHover } from '../src/js/threeLibrary';
+import pic2 from "../src/img/2.jpg";
+import pic1 from "../src/img/1.jpg";
 
 const todosReducer = (state, action) => {
     state = action;
@@ -72,7 +74,7 @@ const operation = (renderer, scene, camera, movingCube, collideMeshList) => {
         // 操作小球
         const ballA = new THREE.SphereGeometry(2, 10, 10);
         const materialBallA = new THREE.LineBasicMaterial({
-            color: 0x3cfa16,
+            color: 0xf60e11,
         });
         const meshBallA = new THREE.Line(ballA, materialBallA);
         setTarget(meshBallA);
@@ -88,9 +90,27 @@ const operation = (renderer, scene, camera, movingCube, collideMeshList) => {
         meshPlane.rotation.set(-Math.PI/2, 0, 0);
         meshPlane.position.set(0, -2.5, 0);
         scene.add(meshPlane);
-        setInterval(() => {
-            randomBox(setTargetArr, scene);
+        let index = 0;
+        let time = setInterval(() => {
+            index++;
+            if (index>=50) {
+                clearInterval(time)
+            }
+            else {
+                randomBox(setTargetArr, scene);
+            }
         }, 1000)
+        // 光源
+        light(scene);
+    }
+
+    // 光源
+    const light = (scene) => {
+        let directionalLight = new THREE.DirectionalLight(0x8f948d, 1);
+        // 设置光源的方向：通过光源position属性和目标指向对象的position属性计算-->
+        directionalLight.position.set(10, 2, 10);
+        // 方向光指向对象网格模型mesh2，可以不设置，默认的位置是0,0,0-->
+        scene.add(directionalLight);
     }
 
     // 键盘监听事件
@@ -200,9 +220,16 @@ const operation = (renderer, scene, camera, movingCube, collideMeshList) => {
 
     // 方块整体平移
     const squareOffset = () => {
+        // var directionalLight = new THREE.DirectionalLight(0x2e99d8, 1);
+        // // 设置光源的方向：通过光源position属性和目标指向对象的position属性计算-->
+        // directionalLight.position.set(10, 2, 10);
+        // // 方向光指向对象网格模型mesh2，可以不设置，默认的位置是0,0,0-->
+
         collideMeshList.map(res => {
+            // directionalLight.target = res;
             res.position.z += .1;
         });
+        // scene.add(directionalLight);
     }
 
     // 渲染函数
@@ -220,10 +247,18 @@ const operation = (renderer, scene, camera, movingCube, collideMeshList) => {
     // 随机小方块
     const randomBox = (setTargetArr, scene) => {
         const box = new THREE.BoxGeometry(5, 5, 5, 10, 10, 10);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0xf01515,
-            wireframe: true
+
+        let texture = new THREE.TextureLoader();// 加载颜色纹理贴图
+
+        let pic1Obj = texture.load(pic1);
+        let pic2Obj = texture.load(pic2);
+
+        let material = new THREE.MeshPhongMaterial({
+            map: pic1Obj,
+            bumpMap: pic2Obj,
+            bumpScale: 3
         });
+
         const mesh = new THREE.Mesh(box, material);
         mesh.position.set(getRandomArbitrary(-50, 50), 0, getRandomArbitrary(0, -300));
         collideMeshList.push(mesh);
