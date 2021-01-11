@@ -50,6 +50,10 @@ const SetStyle = styled.div`
       text-align: left;
     }
   }
+  
+  .ant-upload.ant-upload-select-picture-card {
+    border-radius: 50%;
+  }
 `;
 
 const UserSetting = () => {
@@ -67,6 +71,8 @@ const UserSetting = () => {
     );
 }
 
+
+
 const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 16 },
@@ -77,10 +83,7 @@ const validateMessages = {
     types: {
         email: '${label} is not a valid email!',
         number: '${label} is not a valid number!',
-    },
-    number: {
-        range: '${label} must be between ${min} and ${max}',
-    },
+    }
 };
 
 const Demo = () => {
@@ -109,7 +112,6 @@ const Demo = () => {
 };
 
 
-
 function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -127,6 +129,7 @@ function beforeUpload(file) {
     }
     return isJpgOrPng && isLt2M;
 }
+
 
 class Avatar extends React.Component {
     state = {

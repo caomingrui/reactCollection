@@ -9,7 +9,7 @@ import { Storage } from './mixins/storage';
 import styled from 'styled-components';
 import { AppRoute, AppColor } from '@/utils/manage/ContextState';
 import header from './ resources/img/header.jpg'
-
+import 'antd/dist/antd.css'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -158,7 +158,7 @@ class SiderDemo extends React.Component {
                                 <Breadcrumb.Item>{ this.state.childName }</Breadcrumb.Item>
                             </Breadcrumb>
                         </BreadCrumbsStyle>
-                        <div className="site-layout-background" style={{ padding: 24, minHeight: 360}}>
+                        <div className="site-layout-background" id="container" style={{ padding: 24, minHeight: 360}}>
                             { this.props.children }
                         </div>
                     </Content>
@@ -169,14 +169,32 @@ class SiderDemo extends React.Component {
     }
 }
 
+const NavUserStyle = styled.div`
+  .user-mess {
+    padding: 0 5px;
+    cursor: pointer;
+    transition: .4s;
+    
+    img {
+      margin-right: 6px;
+    }
+  }
+  
+  .user-mess:hover {
+    background: #f7f7f7;
+  }
+`;
+
 // 头部用户栏
 const NavUser = () => {
 
     return (
-        <>
-            <img src={header} alt=""/>
-            <span>React Hooks</span>
-        </>
+        <NavUserStyle>
+            <div className="user-mess">
+                <img src={header} alt=""/>
+                <span>React Hooks</span>
+            </div>
+        </NavUserStyle>
     );
 };
 

@@ -18,7 +18,7 @@ const Test = React.lazy(async () => {
 const Admin = React.lazy(() => import('@/page/admin/index'));
 
 const Three = React.lazy(() => import('@/page/threeStudy/index'));
-const ANI = React.lazy(() => import('@/page/threeStudy/test/objectCollision'));
+const ANI = React.lazy(() => import('@/page/threeStudy/test/game'));
 
 const routes = [
     {
