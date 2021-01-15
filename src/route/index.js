@@ -18,9 +18,21 @@ const Test = React.lazy(async () => {
 const Admin = React.lazy(() => import('@/page/admin/index'));
 
 const Three = React.lazy(() => import('@/page/threeStudy/index'));
-const ANI = React.lazy(() => import('@/page/threeStudy/test/game'));
+const ANI = React.lazy(() => import('@/page/threeStudy/test/shoot')); //小球更改轨道打靶
+const render = React.lazy(() => import('@/page/threeStudy/test/renderTest'));//CSS3DRenderer 试用
+const particleTest = React.lazy(() => import('@/page/threeStudy/test/particleTest'));//粒子效果 试用
+const shaderTest = React.lazy(() => import('@/page/threeStudy/test/shaderTest'));//粒子效果 试用
 
 const routes = [
+    {
+        path: '/D', component: shaderTest
+    },
+    {
+        path: '/C', component: particleTest
+    },
+    {
+        path: '/B', component: render
+    },
     {
         path: '/A', auth: true, component: ANI
     },

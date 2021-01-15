@@ -1,7 +1,5 @@
 import React, {memo, useEffect, useState, useReducer} from "react";
 import * as THREE from 'three';
-import {loadMustBe} from "./objectCollision";
-import {loadRender} from "../src/js/three";
 import THREEx from "../src/js/KeyboardState";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { bouncHover } from '../src/js/threeLibrary';
@@ -26,7 +24,6 @@ export default memo(() => {
     useEffect(() => {
         console.log("组件挂载完成之后执行:");
         init(setRenderer, setCamera, setScene, setControls, setTarget, setTargetArr);
-
     },[]);
 
     useEffect(() => {
